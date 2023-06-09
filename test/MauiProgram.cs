@@ -9,12 +9,15 @@ public class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			.UseMauiApp<App>();
-		builder
+			.UseMauiApp<App>()
 			.UsePrism(prism => {
-				prism.RegisterTypes(container =>
+                prism.ConfigureServices(services => {
+                })
+				.RegisterTypes(container =>
 				{
-					container.RegisterForNavigation<MainPage, MainPageViewModel>();
+                    container.RegisterSingleton<INoteService, NoteService>();
+                    container.RegisterForNavigation<MainPage, MainPageViewModel>();
+					container.RegisterForNavigation<NoteDetailPage, NoteDetailPageViewModel>();
 				})
                 .OnAppStart(navigation => navigation.CreateBuilder().AddSegment<MainPageViewModel>().Navigate());
             })

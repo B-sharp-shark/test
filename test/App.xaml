@@ -8,7 +8,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
+            <x:Double x:Key="ThicknessSmall">1.5</x:Double>
+            <x:Double x:Key="ThicknessMedium">2.5</x:Double>
+
+            <Style TargetType="ScrollView">
+                <Setter Property="HorizontalScrollBarVisibility" Value="Never"/>
+
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
