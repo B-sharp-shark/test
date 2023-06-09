@@ -1,4 +1,5 @@
 ﻿
+using MauiIcons.Material;
 using Microsoft.Extensions.Logging.Abstractions;
 namespace test;
 
@@ -14,15 +15,15 @@ public class MauiProgram
 				prism.RegisterTypes(container =>
 				{
 					container.RegisterForNavigation<MainPage, MainPageViewModel>();
-				});
-                //.OnAppStart(navigation => navigation.CreateBuilder().AddSegment<MainPageViewModel>().Navigate());
+				})
+                .OnAppStart(navigation => navigation.CreateBuilder().AddSegment<MainPageViewModel>().Navigate());
             })
 
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+			}).UseMaterialMauiIcons(); ;
 
 
 		

@@ -54,17 +54,29 @@
 	<ItemGroup>
 	  <PackageReference Include="Prism.Maui" Version="8.1.273-pre" />
 	  <PackageReference Include="Prism.DryIoc.Maui" Version="8.1.273-pre" />
+	  <PackageReference Include="AathifMahir.Maui.MauiIcons.Material" Version="1.1.1" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="ViewModels\" />
 	  <None Remove="Models\" />
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\Base\" />
+	  <None Remove="Controls\" />
+	  <None Remove="Converters\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="ViewModels\" />
 	  <Folder Include="Models\" />
 	  <Folder Include="Views\" />
 	  <Folder Include="ViewModels\Base\" />
+	  <Folder Include="Controls\" />
+	  <Folder Include="Models\" />
+	  <Folder Include="Converters\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Views\NoteThumbnail.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>
