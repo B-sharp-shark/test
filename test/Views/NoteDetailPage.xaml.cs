@@ -2,15 +2,43 @@
 
 public partial class NoteDetailPage : ContentPage
 {
-	public NoteDetailPage()
+    public static BindableProperty EditorWidthProperty = BindableProperty.Create(
+       nameof(EditorWidth),
+       typeof(double),
+       typeof(NoteDetailPage),
+       null,
+       BindingMode.OneWay);
+    public double EditorWidth
+    {
+        get => (double)GetValue(EditorWidthProperty);
+        set => SetValue(EditorWidthProperty, value);
+    }
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+
+        if (DeviceInfo.Platform == DevicePlatform.iOS)
+        {
+            EditorWidth = width - 60d;
+        }
+        else
+        {
+            EditorWidth = width - 66d;
+
+        }
+    }
+    public NoteDetailPage()
 	{
 		InitializeComponent();
 	}
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
         AnimatePage();
+
+        await Task.Delay(1000);
+        EntryControl.Focus();
     }
     private void AnimatePage()
     {

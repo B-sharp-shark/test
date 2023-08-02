@@ -4,13 +4,14 @@ using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Navigation;
+using test.Main.Naigation;
 
 namespace test.ViewModels
 {
 	public partial class NoteDetailPageViewModel : BaseViewModel
 	{
 		[ObservableProperty]
-		private Note note = new Note();
+		private Note note = new Note() {};
 
         
         [ObservableProperty]
@@ -19,11 +20,24 @@ namespace test.ViewModels
         [RelayCommand]
         private async Task AddNote()
         {
-            var navParameters = new NavigationParameters
+            if (string.IsNullOrEmpty(Note.Title))
             {
-                { "Note", Note }
-            };
-            await ClosePage(navParameters);
+                await pageDialogService.DisplayAlertAsync("Empty", "Please add a title first", "Ok");
+                return;
+            }
+
+            if (!noteService.NoteExists(Note))
+            {
+                var navParameters = new NavigationParameters
+                {
+                    { "AddNote", Note },
+                };
+                await ClosePage(navParameters);
+            }
+            else
+            {
+                await pageDialogService.DisplayAlertAsync("Exists", "A note with this title already exists", "Ok");
+            }
         }
 
         [RelayCommand]
@@ -45,7 +59,7 @@ namespace test.ViewModels
         {
             var navParameters = new NavigationParameters
             {
-                { "Note", Note }
+                { "UpdateNote", Note }
             };
             await ClosePage(navParameters);
         }
@@ -65,7 +79,7 @@ namespace test.ViewModels
             await navigationService.GoBackAsync(navParameters);
         }
         IPageDialogService pageDialogService;
-        public NoteDetailPageViewModel(INavigationService navigationService,INoteService noteService, IPageDialogService pageDialogService) :base(navigationService, noteService)
+        public NoteDetailPageViewModel(INavService navigationService,INoteService noteService, IPageDialogService pageDialogService) :base(navigationService, noteService)
 		{
             this.pageDialogService = pageDialogService;
         }

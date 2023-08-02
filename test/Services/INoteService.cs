@@ -6,7 +6,8 @@
 
         bool AddNote(Note note);
         IEnumerable<Note> GetNotes();
-        bool RemoveNote(int index);
-        Note UpdateNote(Note note);
+        bool RemoveNote(string title);
+        Note UpdateNote(Note old, Note note);
+        bool NoteExists(Note note);
     }
 }

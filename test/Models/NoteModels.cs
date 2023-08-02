@@ -22,7 +22,7 @@ namespace test.Models
             get { return new IconExtension { Icon = Icon, IconSize = 20, IconColor = Colors.Black}; }
         }
 		public MaterialIcons Icon { get; set; }
-		public int Index { get; set; }
+		public int Index { get; set; } = 0;
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public string ColorHex { get; set; } = "#C299F5";

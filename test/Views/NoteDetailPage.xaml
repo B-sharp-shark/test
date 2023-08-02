@@ -6,19 +6,32 @@
              xmlns:material="clr-namespace:MauiIcons.Material;assembly=MauiIcons.Material"
              xmlns:viewmodels="clr-namespace:test.ViewModels"
              xmlns:models="clr-namespace:test.Models"
+             NavigationPage.HasNavigationBar="False"
              x:DataType="viewmodels:NoteDetailPageViewModel"
+             x:Name="RootPage"
              Title="NoteDetailPage">
-    <Grid RowDefinitions="50,*,Auto" ColumnDefinitions="*,*" Padding="20" RowSpacing="15" ColumnSpacing="15">
+    <ScrollView Orientation="Vertical">
+        <Grid RowDefinitions="50,*,Auto" ColumnDefinitions="*,*" Padding="20" RowSpacing="15" ColumnSpacing="15">
 
         <ImageButton Margin="0,0,0,0" x:Name="AddNote" Grid.Column="1" Grid.Row="0" CornerRadius="6"
                          Command="{Binding DeleteCommand}"
                          Padding="5" HorizontalOptions="End" VerticalOptions="Center" Source="{material:Icon Icon=Delete, IconSize=30, IconColor=Gray}"
-                     BorderWidth="{StaticResource ThicknessSmall}" BorderColor="Black"/>
+                     BorderWidth="{StaticResource ThicknessSmall}" BorderColor="Black">
+            <ImageButton.Triggers>
+                <DataTrigger TargetType="ImageButton" Binding="{Binding Update}" Value="False">
+                    <Setter Property="IsVisible" Value="False"/>
+                </DataTrigger>
+
+            </ImageButton.Triggers>
+
+        </ImageButton>
         <Border Stroke="Black" Grid.Row="1" Grid.ColumnSpan="2" StrokeThickness="{StaticResource ThicknessMedium}" StrokeShape="RoundRectangle 20,20,4,4" >
             <StackLayout >
-                <Entry x:Name="EntryControl" Opacity="0" TranslationX="100" Text="{Binding Note.Title}" FontSize="20" Margin="9,20,9,0"/>
+                <Entry x:Name="EntryControl" Opacity="0" Placeholder="Enter Title" TranslationX="100" Text="{Binding Note.Title}" FontSize="20" Margin="9,20,9,0"/>
                 <Label x:Name="LabelControl" Opacity="0" TranslationX="100" Text="24th Jan, 2023" FontSize="12" TextColor="Gray" Margin="10,0"/>
-                <Editor x:Name="EditorControl" Opacity="0" TranslationX="100" VerticalOptions="FillAndExpand" Text="{Binding Note.Description}" Margin="5"/>
+                <Editor x:Name="EditorControl" Opacity="0" Placeholder="Enter Description" TranslationX="100" VerticalOptions="FillAndExpand"
+                        WidthRequest="{Binding EditorWidth, Source={x:Reference RootPage}}" HorizontalOptions="FillAndExpand"
+                        Text="{Binding Note.Description}" Margin="{OnPlatform Android='10,5', iOS='5'}"/>
             </StackLayout>
         </Border>
         <Button CornerRadius="6" Text="Add" BackgroundColor="LawnGreen" Command="{Binding AddNoteCommand}" Padding="0,20" TextColor="Black" Grid.Row="2" Grid.Column="1">
@@ -26,7 +39,6 @@
                 <DataTrigger TargetType="Button" Binding="{Binding Update}" Value="True">
                     <Setter Property="Text" Value="Update"/>
                     <Setter Property="Command" Value="{Binding UpdateNoteCommand}"/>
-
                 </DataTrigger>
 
             </Button.Triggers>
@@ -34,4 +46,6 @@
         </Button>
         <Button CornerRadius="6" Command="{Binding GoBackCommand}" Text="Cancel" BackgroundColor="LightGray" Padding="0,20" TextColor="Black" Grid.Row="2" Grid.Column="0"/>
     </Grid>
+
+    </ScrollView>
 </ContentPage>

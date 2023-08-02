@@ -1,5 +1,6 @@
 ﻿
 using MauiIcons.Material;
+using test.Main.Naigation;
 using Microsoft.Extensions.Logging.Abstractions;
 namespace test;
 
@@ -12,14 +13,22 @@ public class MauiProgram
 			.UseMauiApp<App>()
 			.UsePrism(prism => {
                 prism.ConfigureServices(services => {
+                    services.RegisterForNavigation<MainPage, MainPageViewModel>("MainPageViewModel");
+                    services.RegisterForNavigation<NoteDetailPage, NoteDetailPageViewModel>();
+                    services.RegisterForNavigation<TabChild, TabChildViewModel>();
+					services.AddSingleton<INoteService, NoteService>();
+					services.AddSingleton<INavService, MyNavService>();
                 })
 				.RegisterTypes(container =>
 				{
-                    container.RegisterSingleton<INoteService, NoteService>();
-                    container.RegisterForNavigation<MainPage, MainPageViewModel>();
-					container.RegisterForNavigation<NoteDetailPage, NoteDetailPageViewModel>();
-				})
-                .OnAppStart(navigation => navigation.CreateBuilder().AddSegment<MainPageViewModel>().Navigate());
+                    
+                })
+                //.OnAppStart(navigation => navigation.CreateBuilder().AddSegment<MainPageViewModel>().Navigate());
+                .OnAppStart(navigation => navigation.CreateBuilder().AddTabbedSegment(b =>
+                        b.CreateTab(t => t.AddSegment<MainPageViewModel>())
+						 ).Navigate());
+
+
             })
 
 			.ConfigureFonts(fonts =>

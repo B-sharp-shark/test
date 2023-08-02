@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:MauiIcons.Material;assembly=MauiIcons.Material"
+             xmlns:models="clr-namespace:test.Models"
+             xmlns:Converters="clr-namespace:test.Converters"
+             xmlns:Views="clr-namespace:test.Views"
+             xmlns:viewmodel="clr-namespace:test.ViewModels"
+             xmlns:controls="clr-namespace:test.Controls"
+             x:DataType="viewmodel:MainPageViewModel"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="Automatic"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.PrefersHomeIndicatorAutoHidden="true"
+             ios:Page.UseSafeArea="True"
+             NavigationPage.HasNavigationBar="False"
+             x:Name="RootPage"
+             Title="Tab"
+             x:Class="test.Views.MainPage">
+    
+            <ContentPage.Resources>
+                <Converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+                <ControlTemplate x:Key="ThumbnailControlTemplate">
+                    <Border Stroke="Black" StrokeThickness="{StaticResource ThicknessSmall}"
+                        WidthRequest="{Binding ItemsWidth ,Source={Reference RootPage}}"
+                        Margin="{OnPlatform Android='0,10,0,10', iOS='0,10,0,10'}"
+                        StrokeShape="RoundRectangle 20" BackgroundColor="{TemplateBinding Color}" Rotation="-10"
+                        HeightRequest="200">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{TemplateBinding Note, Converter={StaticResource NullToBoolConverter}}" Value="True">
+                                <Setter Property="Opacity" Value="0"/>
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <!--<Border.Shadow>
+                            <Shadow Brush="Black"
+                                    Offset="{OnPlatform 0, iOS='5,5'}"
+                                    Radius="{OnPlatform 0, iOS=10}"
+                                    Opacity="{OnPlatform 0, iOS=0.4}" />
+                        </Border.Shadow>-->
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="{TemplateBinding Note}" Command="{Binding GoToNoteDetailCommand, Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}}"/>
+                    </Border.GestureRecognizers>
+                                
+                    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="10">
+                        <Label Grid.Row="0" Text="{TemplateBinding Title}" LineBreakMode="TailTruncation" MaxLines="2" FontSize="20" TextColor="Black"/>
+                        <Label Grid.Row="1" Text="24th Jan, 2020" TextColor="Gray"/>
+                        <Label Grid.Row="2" Margin="0,10,0,0" Text="{TemplateBinding Description}" TextColor="Gray"/>
+                        <Image Grid.Row="3" Source="{TemplateBinding IconExtension}" HorizontalOptions="Start" />
+                    </Grid>
+                </Border>
+              </ControlTemplate>
+        </ContentPage.Resources>
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,*" RowSpacing="20" Margin="0,20,0,0">
+
+            <Label Margin="20,0,0,0" x:Name="YourNote" Opacity="0" TranslationX="-150" Grid.ColumnSpan="2" Grid.Row="0" FontSize="40" Text="Your Notes" VerticalOptions="Center"/>
+            <ImageButton Margin="0,0,20,0" x:Name="AddNote"  Grid.Column="2" Grid.Row="0" CornerRadius="6"
+                         Command="{Binding GoToNoteDetailCommand}"
+                         Padding="5" HorizontalOptions="End" VerticalOptions="Center" Source="{material:Icon Icon=Add, IconSize=30}" BorderWidth="{StaticResource ThicknessSmall}" BorderColor="Black"/>
+            
+            <CollectionView ItemsSource="{Binding Notes}" Grid.Row="1" Grid.RowSpan="2"
+                            ios:ScrollView.ShouldDelayContentTouches="True" EmptyView="Click the plus button to add a new note"
+                            Margin="0,0,0,0" Grid.ColumnSpan="3" >
+                <CollectionView.Header>
+                    <ContentView>
+                        <BoxView Color="White" HeightRequest="70"/> 
+                    </ContentView>
+                </CollectionView.Header>
+                <CollectionView.Footer>
+                    <ContentView>
+                        <BoxView Color="White" HeightRequest="{OnPlatform 20, iOS=200}"/>
+                    </ContentView>
+                </CollectionView.Footer>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="0" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Note" >
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="30,0" Spacing="-20">
+                            <controls:NoteThumbnailControlTemplate ControlTemplate="{StaticResource ThumbnailControlTemplate}" Col="0" NoteArr="{Binding .}"/>
+                            <controls:NoteThumbnailControlTemplate ControlTemplate="{StaticResource ThumbnailControlTemplate}" Col="1" NoteArr="{Binding .}"
+                                                                   />
+                            
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <ScrollView Orientation="Horizontal" Grid.Row="1" VerticalOptions="Start" Grid.ColumnSpan="3" Padding="0,10">
+                <ScrollView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="White" Offset="0.6"/>
+                        <GradientStop Color="#00FFFFFF" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </ScrollView.Background>
+                <StackLayout Spacing="15" Orientation="Horizontal" x:Name="NoteTypes" VerticalOptions="Start">
+                    <Button Text="#All" Padding="20,10" BorderColor="Black" Opacity="0" TranslationX="50" BackgroundColor="LawnGreen" BorderWidth="{StaticResource ThicknessSmall}" TextColor="Black" Margin="20,0,0,0"/>
+                    <StackLayout BindableLayout.ItemsSource="{Binding NoteTypes}"   Spacing="15" Orientation="Horizontal" VerticalOptions="Start" Margin="0,0,20,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Button Padding="20,10" Text="{Binding ., StringFormat='#{0}'}" BorderColor="Black" BorderWidth="{StaticResource ThicknessSmall}" TextColor="Black" BackgroundColor="White"/>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+            </Grid>
+
+        
+
+</ContentPage>
+

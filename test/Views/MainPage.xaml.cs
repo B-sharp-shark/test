@@ -1,14 +1,37 @@
-﻿
-namespace test;
+﻿using Microsoft.Maui.Devices;
+using Prism.Common;
+
+namespace test.Views;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+    public static BindableProperty ItemsWidthProperty = BindableProperty.Create(
+        nameof(ItemsWidth),
+        typeof(double),
+        typeof(MainPage),
+        null,
+        BindingMode.OneWay);
+
+    public double ItemsWidth
+    {
+        get => (double)GetValue(ItemsWidthProperty);
+        set => SetValue(ItemsWidthProperty, value);
+    }
+    
+    int count = 0;
 
 	public MainPage()
 	{
 		InitializeComponent();
 	}
+
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+
+        ItemsWidth = ((width - (new Thickness(30, 0)).HorizontalThickness ) / 2.0d + 10d);
+
+    }
 
     protected override void OnAppearing()
     {

@@ -65,6 +65,9 @@
 	  <None Remove="Controls\" />
 	  <None Remove="Converters\" />
 	  <None Remove="Services\" />
+	  <None Remove="Helpers\" />
+	  <None Remove="Main\" />
+	  <None Remove="Main\Naigation\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="ViewModels\" />
@@ -75,6 +78,9 @@
 	  <Folder Include="Models\" />
 	  <Folder Include="Converters\" />
 	  <Folder Include="Services\" />
+	  <Folder Include="Helpers\" />
+	  <Folder Include="Main\" />
+	  <Folder Include="Main\Naigation\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Views\NoteThumbnail.xaml">

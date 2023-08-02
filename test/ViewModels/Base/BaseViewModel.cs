@@ -1,19 +1,23 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Prism.Common;
+using test.Main.Naigation;
 
-namespace test.ViewModels.Base
+namespace test.ViewModels
 {
 	public partial class BaseViewModel:ObservableObject,INavigationAware
 	{
-        public INavigationService navigationService;
+        public INavService navigationService;
         public INoteService noteService;
         public INavigationParameters keyValuePairs;
 
-        public BaseViewModel(INavigationService navigationService, INoteService noteService)
+        public BaseViewModel(INavService navigationService, INoteService noteService)
         {   
             this.navigationService = navigationService;
             this.noteService = noteService;
+
+
         }
 
 
@@ -22,6 +26,8 @@ namespace test.ViewModels.Base
         {
             await navigationService.GoBackAsync();
         }
+
+        
 
         public virtual void OnNavigatedFrom(INavigationParameters parameters)
         {
